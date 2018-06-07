@@ -37,6 +37,16 @@ This command-line is run to provide a listing of all users that are in the ldap 
 
     Specify URI(s) referring to the ldap server(s); a list of URI, separated by whitespace or commas is expected; only the protocol/host/port fields are allowed. As an exception, if no host/port is specified, but a DN is, the DN is used to look up the corresponding host(s) using the DNS SRV records, according to RFC 2782. The DN must be a non-empty sequence of AVAs whose attribute type is "dc" (domain component), and must be escaped according to RFC 2396.
 
+-L "Display Results"
+
+    Search results are display in LDAP Data Interchange Format detailed in ldif(5). A single -L restricts the output to LDIFv1. A second -L disables comments. A third -L disables printing of the LDIF version. The default is to use an extended version of LDIF.
+
+-o "opt"
+
+    Specify general options.
+
+    ldif-wrap=no - Allows the exported data to not wrap to a new line if the line information is over 78 characters.
+
 For the full list of switches refer to the ldapsearch man page or consult your organization preferred Linux manual web page.
 
 ## Command Line Code
@@ -44,11 +54,11 @@ For the full list of switches refer to the ldapsearch man page or consult your o
 The following command line is using the current iteration of the ldapsearch protocol.
 
 ``` shell
-ldapsearch -s sub "(objectclass=*)" -W -D "uid=bjensen, dc=example,dc=com" -H hostname -b "dc=example,dc=com"  > ldapresults.ldif
+ldapsearch -LLL -o ldif-wrap=no -s sub "(objectclass=*)" -W -D "uid=bjensen, dc=example,dc=com" -H hostname -b "dc=example,dc=com"  > ldapresults.ldif
 ```
 
 The following command line is using deprecated switches "-h, -p" however it is still provided in case the environment does not support the newer switch "-H".
 
 ``` shell
-ldapsearch -s sub "(objectclass=*)" -p 389 -W -D "uid=bjensen, dc=example,dc=com" -h hostname -b "dc=example,dc=com"  > ldapresults.ldif
+ldapsearch -LLL -o ldif-wrap=no -s sub "(objectclass=*)" -p 389 -W -D "uid=bjensen, dc=example,dc=com" -h hostname -b "dc=example,dc=com"  > ldapresults.ldif
 ```
